@@ -1,0 +1,9 @@
+<%= form_tag "/submit_login_form", :class => "home-signup" do  %>
+  <dl class="form">
+    <dd>
+    <%= text_field_tag :mac, params[:mac],  :placeholder => t('signup_username'), :class => "short" %>
+    </dd>
+  </dl>
+  <p class="text-muted">注册后就可以关注你喜欢的课程了</p>
+  <p><%= submit_tag t("signup_free"), :class => "button button-block primary" %></p>
+<% end %>

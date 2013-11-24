@@ -1,0 +1,18 @@
+<div class="single-form-container">
+  <div class="boxed-group" id="login">
+    <h3><%= t('login') %></h3>
+    <div class="boxed-group-inner">
+      <%= form_tag "/submit_login_form" do %>
+        <dl class="form">
+          <dt>
+          <%= label_tag t('username') %>
+          </dt>
+          <dd>
+          <%= text_field_tag :mac, params[:mac], :class => "short" %>
+          </dd>
+        </dl>
+        <p> <%= submit_tag t('login'), :class => "button" %> </p>
+      <% end %>
+    </div>
+  </div>
+</div>

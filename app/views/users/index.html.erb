@@ -1,0 +1,12 @@
+<div class="container">
+  <div id="member-page">
+    <div class="title">
+      <%= t 'member_count' %> <%= @users.count %>
+    </div>
+    <% if @users.blank? %>
+      <%= t 'no_user_found' %>
+    <% else %>
+      <%= render :partial => "shared/member_list", :locals => {:members => @users} %>
+    <% end %>
+  </div>
+</div>

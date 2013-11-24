@@ -1,0 +1,97 @@
+<% content_for :template_js do %>
+  <%= javascript_include_tag 'i_fileupload'%>
+  <script>
+    jQuery(function($) {
+      var _tip = $("#upload-tip");
+      $('#fileupload').fileupload({
+          formData: {course_id: <%= course.id %>},
+          dataType: 'script',
+          url: '/videos.js',
+          add: function(e, data){
+            types = /(\.|\/)(mov|mp4)$/i;
+            file = data.files[0];
+            if (types.test(file.type) || types.test(file.name))
+            {
+              $('#filesize').html("文件大小： " + "<span class='number'>" + (file.size/(1024*1024)).toFixed(2) + "</span>" + "M");
+              file = data.files[0];
+              data.context = $(tmpl("template-upload", file));
+              $('.secondary-info').append(data.context);
+              data.submit();
+            }
+            else
+            {
+              alert("上传失败：" + file.name + " 视频格式错误，请上传mov或mp4文件");
+            }
+          },
+          start: function(e) {
+            _tip.html('上传中&nbsp;&middot;&middot;&middot;');
+            $('#submit_video_info').attr('value', '上传中...请稍等');
+            $('#submit_video_info').attr('disabled', 'true');
+            $('a.fileupload-btn').bind('click', false);
+          },
+          progress: function(e, data){
+            if(data.context) {
+              progress = parseInt(data.loaded / data.total * 100, 10);
+              data.context.find('.bar').css('width', progress + '%');
+              $('#progress-bar').html("<span class='progress-text'>" + progress + '%' + "</span>");
+            }
+          },
+          done: function (e, data) {
+            _tip.html("视频上传成功！");
+          },
+      });
+    });
+  </script>
+<% end %>
+
+
+<div class="add-video-box">
+  <div class="secondary-info">
+    <h1 id="upload-new-video"> <%= t('upload_new_video') %> </h1>
+    <div id="filesize">
+      <p><%= t('note_max_video_size_50m') %></p>
+      <p><%= t('supported_video_format') %></p>
+    </div>
+    <a class= "fileupload-btn button">
+      <span id="upload-tip"><%= t('click_to_upload_a_video') %></span>
+      <input id="fileupload" name="video[asset]" type="file">
+    </a>
+    <script id="template-upload" type="text/x-tmpl">
+      <div class="upload">
+        {%=o.name%}
+        <div class="progress">
+          <div class="bar" id="progress-bar" style="width: 0%"></div>
+        </div>
+      </div>
+    </script>
+  </div>
+
+  <div class="primary-info">
+    <h1><%= t('enter_video_info') %></h1>
+    <%= form_for(Video.new) do |f| %>
+      <dl class="form">
+        <dt>
+          <%= f.label t("video_title") %>
+        </dt>
+        <dd>
+          <%= f.text_field :title, :class => "short" %>
+        </dd>
+      </dl>
+      <dl class="form">
+        <dt>
+        <%= f.label t("video_desc") %>
+        </dt>
+        <dd>
+        <%= f.text_area :desc, :size => "14x4", :id => "video_desc", :class => "short" %>
+        </dd>
+      </dl>
+      <dl class="form">
+        <dt>
+        <%= f.check_box :free %>
+        <%= f.label t('free') %>
+        </dt>
+      </dl>
+      <%= f.submit t('submit_video_info'), :class => "minibutton", :disabled => true, data: {disable_with: t('saving') + "..."}, :id => "submit_video_info" %>
+    <% end %>
+  </div>
+</div>

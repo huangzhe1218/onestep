@@ -1,0 +1,16 @@
+<div class="rightbox">
+  <div class="ad-image">
+    <div id="uploadPreview">
+        <%= image_tag course.poster_url , :id => 'poster'%>
+      
+    </div>
+  </div>
+  <div class="ad-title">
+    <input class="inputBox titleB inputStyleB_orange" id="input_title2" name="" type="text" value=<%= course.title %> maxlength="10"  />
+  </div>
+  <div class="ad-content">
+    <textarea id="input_content2"  value="" name="input_content2"  style="font-size:16px;"><%= course.description %></textarea> 
+  </div>
+
+</div>
+

@@ -1,0 +1,27 @@
+<div class="course-thumb"> 
+  
+  <%= link_to course_path(course), :class => "course-detail green-box-shadow" do %>
+  <%= image_tag course.poster_url, :id => 'adpost'%>
+    <div class="course-info">
+      <h4>
+        <%= course.title %>
+        <% if !course.public %>
+          <span class="private-label"><%= t('course_private') %></span>
+        <% end %>
+      </h4>
+      <p><%= course.description %></p>
+    </div>
+  <% end %>
+  
+  <div class="course-author">
+    <%= link_to course.user.name, member_path(course.user.name) %>
+  </div>
+
+  <% if current_user && current_user == course.user %>
+    <ul class="course-actions">
+      <li><%= link_to t('edit'), edit_course_path(course) %></li>
+      <li><%= link_to t('delete'), course, :confirm => t('confirm_delete'), :method => :delete %></li>
+    </ul>
+  <% end %>
+
+</div>

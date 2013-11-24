@@ -1,0 +1,54 @@
+<% content_for :template_js do %>
+  <script>
+    $('#course_desc').NobleCount('#desc_count',{
+      on_negative: 'go_red',
+      on_positive: 'go_green',
+      max_chars: 33});
+  </script>
+<% end %>
+<%= form_for(@course, :url => "/course") do |f| %>
+  <%= f.hidden_field :user_id %>
+  <%= f.hidden_field :name %>
+  <%= flash[:notice] %>
+  <% if @course.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@course.errors.count, "error") %> prohibited this item from being saved:</h2>
+
+      <ul>
+      <% @course.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+  <dl class="form">
+    <dt> <%= f.label :price %> </dt>
+    <dd> <%= f.text_field :price, :class => "short" %> </dd>
+  </dl>
+  <dl class="form">
+    <dt> <%= f.label :title %> </dt>
+    <dd> <%= f.text_field :title, :class => "short" %> </dd>
+  </dl>
+  <dl class="form">
+    <dt>
+      <%= f.label :description %>
+      (<%= t('remaining') %><span id='desc_count'></span> <%= t('characters') %>)
+    </dt>
+    <dd>
+      <%= f.text_area :description, :size => "14x4", :id => "course_desc" %>
+    </dd>
+  </dl>
+  <div class="form">
+    <%= f.check_box :public %>
+    <%= f.label t('public') %>
+  </div>
+  <div>
+    <%= f.submit t('update_course'), :class => "button primary" %>
+    <span id="edit-course-delete">
+      <%= link_to t('delete_this_course'), @course, :confirm => t('confirm_delete'), :method => :delete, :class => "minibutton danger" %>
+    </span>
+  </div>
+<% end %>
+

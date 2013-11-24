@@ -1,0 +1,24 @@
+<div class="container">
+
+  <div class="marketing">
+
+    <hr class="soften">
+
+    <% if !@recent_courses.empty? %>
+      <div class="courses clearfix">
+        <% @recent_courses.each do |course| %>
+          <div class="course">
+            <%= render "courses/course", :course => course %>
+          </div>
+        <% end %>
+      </div>
+      <%= link_to "查看所有课程", course_index_path, class: "all-courses button" %>
+    <% else %>
+      <p>
+      No Courses found
+      </p>
+    <% end %>
+  </div>
+
+</div>
+

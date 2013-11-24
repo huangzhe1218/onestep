@@ -1,0 +1,88 @@
+<%= content_for :template_js do %>
+  <script>
+    jQuery(function($) {
+      $('img#avatar').tooltip();
+    });
+  </script>
+<% end %>
+<div id="user-show" class="container">
+  <div id="user-info">
+    <div class="avatared">
+      <% if current_user == @user %>
+        <a href="/account" title="点击编辑个人信息">
+          <%= image_tag @user.final_avatar_url,:alt => t('your_avatar'), :size => "210x210", :id => "avatar" %>
+        </a>
+        <%= link_to t('edit_profile'), account_path, :class => "button" %>
+      <% else %>
+        <%= image_tag @user.final_avatar_url,:alt => t('your_avatar'), :size => "210x210", :id => "avatar" %>
+        <%= follow_user_tag(@user) %>
+      <% end %>
+    </div>
+    <h1>
+      <span><%= @user.name %></span>
+    </h1>
+    <p>
+      <span> <i class="icon-envelope"></i> <a href="mailto:<%= @user.email %>"> <%= @user.email %> </a> </span>
+    </p>
+    <ul class="stats">
+      <li><strong><%= @user.follower_count %></strong> followers</li>
+      <li><strong><%= @user.followed_user_count %></strong> following</li>
+    </ul>
+  </div><!--end user-info -->
+  <div id="user-course">
+    <div class="owned-course-section clearfix">
+      <div class="user-course-header">
+        <% if current_user == @user %>
+          <%= link_to create_course_path, :class => "button primary new-course" do %>
+            <%= t('create_course') %>
+            <i class='icon-hand-right icon-large'></i>
+          <% end %>
+        <% end %>
+        <h2><%= t('my_courses') %>:</h2>
+      </div>
+      <% if @courses.present? %>
+        <div class="courses">
+          <% @courses.each do |course| %>
+            <div class="course">
+              <%= render "courses/course", :course => course %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p><%= t('no_courses_found') %></p>
+      <% end %>
+    </div>
+    <div class="paid-course-section clearfix">
+      <div class="user-course-header">
+        <h2><%= t('paid') %>:</h2>
+      </div>
+      <% if @paid_courses.present? %>
+        <div class="courses">
+          <% @paid_courses.each do |course| %>
+            <div class="course">
+              <%= render "courses/course", :course => course %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p><%= t('no_courses_found') %></p>
+      <% end %>
+    </div>
+    <div class="watched-course-section clearfix">
+      <div class="user-course-header">
+        <h2><%= t('watched') %>:</h2>
+      </div>
+      <% if @watched_courses.present? %>
+        <div class="courses">
+          <% @watched_courses.each do |course| %>
+            <div class="course">
+              <%= render "courses/course", :course => course %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p><%= t('no_courses_found') %></p>
+      <% end %>
+    </div>
+  </div><!--end user-course -->
+</div><!-- user-show -->
